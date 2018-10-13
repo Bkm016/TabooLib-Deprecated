@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="TabooLib-Deprecated:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/TabooLib_Deprecated_jar</output-path>
-    <root id="archive" name="TabooLib-Deprecated.jar">
-      <element id="module-output" name="TabooLib-Deprecated" />
-      <element id="file-copy" path="$PROJECT_DIR$/plugin.yml" />
-    </root>
-  </artifact>
-</component>
