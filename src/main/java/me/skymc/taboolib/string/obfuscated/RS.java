@@ -1,4 +1,4 @@
-package obfuscated;
+package me.skymc.taboolib.string.obfuscated;
 
 import java.util.Random;
 

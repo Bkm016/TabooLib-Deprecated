@@ -1,4 +1,4 @@
-package deprecated;
+package me.skymc.taboolib.deprecated;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

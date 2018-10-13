@@ -1,6 +1,6 @@
 name: TabooLibDeprecated
 main: me.skymc.taboolib.deprecated.TabooLibDeprecated
-version: 1.0
+version: ${project.version}
 
 author: [坏黑]
-depend: [TabooLib]
+depend: [Vault]
