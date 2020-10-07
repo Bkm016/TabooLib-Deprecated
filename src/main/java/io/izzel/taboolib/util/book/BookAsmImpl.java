@@ -28,7 +28,7 @@ public class BookAsmImpl extends BookAsm {
             if (v11600) {
                 ((org.bukkit.craftbukkit.v1_16_R1.inventory.CraftMetaBook) bookmeta).pages.add(net.minecraft.server.v1_16_R1.IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components)));
             } else {
-                ((CraftMetaBook) bookmeta).pages.add(IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components)));
+                ((org.bukkit.craftbukkit.v1_12_R1.inventory.CraftMetaBook) bookmeta).pages.add(net.minecraft.server.v1_12_R1.IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components)));
             }
         }
     }
