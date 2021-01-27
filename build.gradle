@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'io.izzel.taboolib.deprecated'
-version = '1.0.2'
+version = '1.0.3'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -19,7 +19,8 @@ repositories {
 dependencies {
     compile 'ink.ptms.core:v11200:11200:all'
     compile 'ink.ptms.core:v11600:11600:all'
-    compile 'io.izzel.taboolib:TabooLib:5.37:all'
+    compile 'ink.ptms.core:v11604:11604:all'
+    compile 'io.izzel.taboolib:TabooLib:5.49:all'
     compile 'org.apache.commons:commons-lang3:3.8'
     compile 'org.ow2.asm:asm:7.3.1'
     compile 'org.ow2.asm:asm-commons:7.3.1'
