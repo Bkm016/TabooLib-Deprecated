@@ -31,6 +31,7 @@ public class BookAsmImpl extends BookAsm {
         for (BaseComponent[] components : pages) {
             if (v11600) {
                 try {
+
                     ((org.bukkit.craftbukkit.v1_16_R1.inventory.CraftMetaBook) bookmeta).pages.add(net.minecraft.server.v1_16_R1.IChatBaseComponent.ChatSerializer.a(ComponentSerializer.toString(components)));
                 } catch (Throwable ignored) {
                     List<String> p = Reflex.Companion.of(bookmeta).read("pages");
