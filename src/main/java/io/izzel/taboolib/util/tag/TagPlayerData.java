@@ -7,8 +7,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * @Author sky
- * @Since 2018-05-21 15:07
+ * @author sky
+ * @since 2018-05-21 15:07
  */
 public class TagPlayerData {
 

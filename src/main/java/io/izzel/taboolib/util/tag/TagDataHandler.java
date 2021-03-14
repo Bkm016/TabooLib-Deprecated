@@ -1,5 +1,6 @@
 package io.izzel.taboolib.util.tag;
 
+import com.google.common.collect.Sets;
 import io.izzel.taboolib.TabooLib;
 import io.izzel.taboolib.module.inject.TListener;
 import io.izzel.taboolib.util.tag.TagPlayerData;
@@ -15,17 +16,33 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.UUID;
 
 /**
- * @Author sky
- * @Since 2018-05-23 0:37
+ * @author sky
+ * @since 2018-05-23 0:37
  */
 @TListener
 public class TagDataHandler implements Listener {
 
-    private static final io.izzel.taboolib.util.tag.TagDataHandler handler = new io.izzel.taboolib.util.tag.TagDataHandler() ;
+    private static final io.izzel.taboolib.util.tag.TagDataHandler handler = new io.izzel.taboolib.util.tag.TagDataHandler();
     private final HashMap<UUID, TagPlayerData> playersData = new HashMap<>();
+    private boolean enabled = false;
+
+    public void setEnabled() {
+        if (!enabled) {
+            Bukkit.getOnlinePlayers().forEach(this::downloadPlayerVariable);
+        }
+        enabled = true;
+    }
+
+    public void resetMainScoreboard() {
+        Set<Team> teams = Sets.newHashSet(Bukkit.getScoreboardManager().getMainScoreboard().getTeams());
+        for (Team team : teams) {
+            team.unregister();
+        }
+    }
 
     public TagPlayerData unregisterPlayerData(Player player) {
         return playersData.remove(player.getUniqueId());
@@ -90,15 +107,18 @@ public class TagDataHandler implements Listener {
     }
 
     private void updatePlayerVariable(TagPlayerData playerData) {
+        setEnabled();
         Bukkit.getOnlinePlayers().forEach(online -> updateTeamVariable(TagUtils.getScoreboardComputeIfAbsent(online), playerData));
     }
 
     private void updatePlayerListName(Player player) {
+        setEnabled();
         TagPlayerData playerData = getPlayerDataComputeIfAbsent(player);
         player.setPlayerListName(!playerData.getNameDisplay().equals(player.getName()) ? playerData.getPrefix() + playerData.getNameDisplay() + playerData.getSuffix() : playerData.getNameDisplay());
     }
 
     private void updateTeamVariable(Scoreboard scoreboard, TagPlayerData playerData) {
+        setEnabled();
         Team entryTeam = TagUtils.getTeamComputeIfAbsent(scoreboard, playerData.getTeamHash());
         if (!entryTeam.getEntries().contains(playerData.getNameDisplay())) {
             entryTeam.addEntry(playerData.getNameDisplay());
@@ -126,17 +146,20 @@ public class TagDataHandler implements Listener {
         }
         for (Player online : Bukkit.getOnlinePlayers()) {
             Scoreboard scoreboard = TagUtils.getScoreboardComputeIfAbsent(player);
-            TagUtils.cleanEntryInScoreboard(scoreboard, playerData.getNameDisplay());
-            // bedwars support
-            if (TabooLib.getConfig().getBoolean("TABLIST-AUTO-CLEAN-TEAM", true)) {
-                TagUtils.cleanEmptyTeamInScoreboard(scoreboard);
+            Team entryTeam = scoreboard.getTeam(playerData.getTeamHash());
+            if (entryTeam != null && entryTeam.getEntries().contains(playerData.getNameDisplay())) {
+                entryTeam.removeEntry(playerData.getNameDisplay());
             }
+            TagUtils.cleanEntryInScoreboard(scoreboard, playerData.getNameDisplay());
+            TagUtils.cleanEmptyTeamInScoreboard(scoreboard);
         }
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
-        downloadPlayerVariable(e.getPlayer());
+        if (enabled) {
+            downloadPlayerVariable(e.getPlayer());
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

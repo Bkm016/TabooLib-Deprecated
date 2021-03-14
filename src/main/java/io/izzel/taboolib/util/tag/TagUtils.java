@@ -9,8 +9,8 @@ import org.bukkit.scoreboard.Team;
 import java.util.Optional;
 
 /**
- * @Author sky
- * @Since 2018-05-21 15:09
+ * @author sky
+ * @since 2018-05-21 15:09
  */
 public class TagUtils {
 
