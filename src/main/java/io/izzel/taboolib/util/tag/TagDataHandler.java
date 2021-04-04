@@ -32,9 +32,9 @@ public class TagDataHandler implements Listener {
 
     public void setEnabled() {
         if (!enabled) {
+            enabled = true;
             Bukkit.getOnlinePlayers().forEach(this::downloadPlayerVariable);
         }
-        enabled = true;
     }
 
     public void resetMainScoreboard() {
