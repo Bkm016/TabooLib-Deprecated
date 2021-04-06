@@ -1,6 +1,5 @@
 package io.izzel.taboolib.util.lite;
 
-import io.izzel.taboolib.Version;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -29,10 +28,7 @@ public class Scoreboards {
         if (elements[0].length() > 32) {
             elements[0] = elements[0].substring(0, 32);
         }
-        IntStream.range(1, elements.length)
-                .filter(i -> elements[i] != null)
-                .filter(i -> Version.isBefore(Version.v1_13) && elements[i].length() > 40)
-                .forEach(i -> elements[i] = elements[i].substring(0, 40));
+        IntStream.range(1, elements.length).filter(i -> elements[i] != null).filter(i -> elements[i].length() > 40).forEach(i -> elements[i] = elements[i].substring(0, 40));
         return elements;
     }
 
@@ -59,44 +55,44 @@ public class Scoreboards {
         return elements;
     }
 
-    public static Scoreboard display(Player player, String... elements) {
+    public static Scoreboard display(Player p, String... elements) {
         elements = fixLines(elements);
         try {
-            if (player.getScoreboard() == null || player.getScoreboard() == Bukkit.getScoreboardManager().getMainScoreboard() || player.getScoreboard().getObjectives().size() != 1) {
-                player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+            if (p.getScoreboard() == null || p.getScoreboard() == Bukkit.getScoreboardManager().getMainScoreboard() || p.getScoreboard().getObjectives().size() != 1) {
+                p.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             }
-            if (player.getScoreboard().getObjective(player.getUniqueId().toString().substring(0, 16)) == null) {
-                player.getScoreboard().registerNewObjective(player.getUniqueId().toString().substring(0, 16), "dummy");
-                player.getScoreboard().getObjective(player.getUniqueId().toString().substring(0, 16)).setDisplaySlot(DisplaySlot.SIDEBAR);
+            if (p.getScoreboard().getObjective(p.getUniqueId().toString().substring(0, 16)) == null) {
+                p.getScoreboard().registerNewObjective(p.getUniqueId().toString().substring(0, 16), "dummy");
+                p.getScoreboard().getObjective(p.getUniqueId().toString().substring(0, 16)).setDisplaySlot(DisplaySlot.SIDEBAR);
             }
-            player.getScoreboard().getObjective(DisplaySlot.SIDEBAR).setDisplayName(elements[0]);
+            p.getScoreboard().getObjective(DisplaySlot.SIDEBAR).setDisplayName(elements[0]);
             for (int i = 1; i < elements.length; i++) {
                 if (elements[i] != null) {
-                    if (player.getScoreboard().getObjective(DisplaySlot.SIDEBAR).getScore(elements[i]).getScore() != 16 - i) {
-                        player.getScoreboard().getObjective(DisplaySlot.SIDEBAR).getScore(elements[i]).setScore(16 - i);
-                        for (String string : player.getScoreboard().getEntries()) {
-                            if (player.getScoreboard().getObjective(player.getUniqueId().toString().substring(0, 16)).getScore(string).getScore() == 16 - i) {
+                    if (p.getScoreboard().getObjective(DisplaySlot.SIDEBAR).getScore(elements[i]).getScore() != 16 - i) {
+                        p.getScoreboard().getObjective(DisplaySlot.SIDEBAR).getScore(elements[i]).setScore(16 - i);
+                        for (String string : p.getScoreboard().getEntries()) {
+                            if (p.getScoreboard().getObjective(p.getUniqueId().toString().substring(0, 16)).getScore(string).getScore() == 16 - i) {
                                 if (!string.equals(elements[i])) {
-                                    player.getScoreboard().resetScores(string);
+                                    p.getScoreboard().resetScores(string);
                                 }
                             }
                         }
                     }
                 }
             }
-            for (String entry : player.getScoreboard().getEntries()) {
+            for (String entry : p.getScoreboard().getEntries()) {
                 boolean toErase = true;
                 for (String element : elements) {
-                    if (element != null && element.equals(entry) && player.getScoreboard().getObjective(player.getUniqueId().toString().substring(0, 16)).getScore(entry).getScore() == 16 - Arrays.asList(elements).indexOf(element)) {
+                    if (element != null && element.equals(entry) && p.getScoreboard().getObjective(p.getUniqueId().toString().substring(0, 16)).getScore(entry).getScore() == 16 - Arrays.asList(elements).indexOf(element)) {
                         toErase = false;
                         break;
                     }
                 }
                 if (toErase) {
-                    player.getScoreboard().resetScores(entry);
+                    p.getScoreboard().resetScores(entry);
                 }
             }
-            return player.getScoreboard();
+            return p.getScoreboard();
         } catch (Exception e) {
             return null;
         }
